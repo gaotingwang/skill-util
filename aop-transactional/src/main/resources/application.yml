@@ -1,0 +1,4 @@
+spring:
+  aop:
+    auto: true # 默认为true是开启AOP支持的，不需要在配置类中使用@EnableAspectJAutoProxy来开启
+    proxy-target-class: false # 是否使用CGLIB来实现动态代理，默认为false,采用JDKDynamicProxy
