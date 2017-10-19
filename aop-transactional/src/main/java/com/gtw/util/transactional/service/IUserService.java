@@ -5,5 +5,5 @@ public interface IUserService {
 
     int updateUser() throws Exception;
 
-    int deleteUser();
+    void deleteUser();
 }

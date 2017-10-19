@@ -24,7 +24,7 @@ public class UserServiceImpl1 implements IUserService {
     }
 
     @Override
-    public int deleteUser() {
+    public void deleteUser() {
         System.out.println("删除用户");
         throw new RuntimeException("运行时异常");
     }

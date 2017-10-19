@@ -1,6 +1,7 @@
 package com.gtw.util.transactional.service;
 
 import com.gtw.util.transactional.annotation.Transactional;
+import com.gtw.util.transactional.exception.MyException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,16 @@ public class UserServiceImpl2 implements IUserService {
     }
 
     @Override
+    @Transactional
     public int updateUser() throws Exception {
-        return 0;
+        System.out.println("另一个修改用户");
+        throw new MyException("检测型异常");
     }
 
     @Override
     @Transactional
-    public int deleteUser() {
-        return 0;
+    public void deleteUser() {
+        System.out.println("删除用户");
     }
 
     @Transactional

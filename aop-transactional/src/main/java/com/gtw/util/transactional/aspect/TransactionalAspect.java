@@ -47,7 +47,7 @@ public class TransactionalAspect {
      * 切面代码可以利用这些点插入到应用的正常流程中，并添加新的行为。
      */
     @Around("transactionalPoint()")
-    public Object advice(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         System.out.println("-----开启事务-----");
         Object obj = joinPoint.proceed();
         System.out.println("-----提交事务-----");
@@ -73,15 +73,13 @@ public class TransactionalAspect {
             // 获取抛出异常的名称
             String exceptionName = error.getClass().getSimpleName();
 
-            // 先判断连接点的方法上是否有注解
-            Method method = this.getMethod4JoinPoint(joinPoint);
-            Transactional methodAnnotation = method.getAnnotation(Transactional.class);
+            // 优先使用方法级别的注解
+            Transactional methodAnnotation = this.getMethodTransactional4JoinPoint(joinPoint);
             if(isRollback4ExceptionName(exceptionName, methodAnnotation)){
                 System.out.println("-----指定异常，回滚事务-----");
             }else {
                 // 方法级别没有注解，则获取类级别注解
-                Class targetClass = this.getClass4JoinPoint(joinPoint);
-                Transactional classTransactional = (Transactional) targetClass.getAnnotation(Transactional.class);
+                Transactional classTransactional = this.getClassTransactional4JoinPoint(joinPoint);
                 if(isRollback4ExceptionName(exceptionName, classTransactional)){
                     System.out.println("-----指定异常，回滚事务-----");
                 }else {
@@ -111,13 +109,22 @@ public class TransactionalAspect {
     }
 
     /**
-     * 获取连接点对应的方法
+     * 获取连接点对应方法上的Transactional
      * @param joinPoint 连接点
      * @return 连接点对应的方法
      */
-    private Method getMethod4JoinPoint(JoinPoint joinPoint) {
-        MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
-        return methodSignature.getMethod();
+    private Transactional getMethodTransactional4JoinPoint(JoinPoint joinPoint) throws NoSuchMethodException {
+        MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature(); // 从接口返回方法
+        Method method =  methodSignature.getMethod(); // 如果实现了接口，是返回接口中定义的方法
+
+        Transactional methodAnnotation = method.getAnnotation(Transactional.class);
+        if(methodAnnotation == null && method.getDeclaringClass().isInterface()) {
+            // 如果接口中的方法上未加注解，则从实现类中寻找注解
+            method = joinPoint.getTarget().getClass().getDeclaredMethod(method.getName(), method.getParameterTypes());
+            methodAnnotation = method.getAnnotation(Transactional.class);
+        }
+
+        return methodAnnotation;
     }
 
     /**
@@ -125,8 +132,9 @@ public class TransactionalAspect {
      * @param joinPoint 连接点
      * @return 连接点对应的类
      */
-    private Class<?> getClass4JoinPoint(JoinPoint joinPoint) {
-        return joinPoint.getTarget().getClass();
+    private Transactional getClassTransactional4JoinPoint(JoinPoint joinPoint) {
+        Class targetClass = joinPoint.getTarget().getClass();
+        return (Transactional) targetClass.getAnnotation(Transactional.class);
     }
 
 }
