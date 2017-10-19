@@ -11,8 +11,16 @@ public class TransactionalAspect {
     /**
      * 定义一个切点Pointcut，在有Transactional的地方加入切面
      * Pointcut定义了“何处”，切点有助于缩小切面所通知的连接点范围
+     * ("execution(* com.test.spring.aop.pointcutexp..JoinPointObjP2.*(..))")
+     * ("within(com.test.spring.aop.pointcutexp..*)") pointcutexp包和子包里的任意类
+     * ("this(com.test.spring.aop.pointcutexp.Intf)") 实现了Intf接口的所有类,如果Intf不是接口,限定Intf单个类.
+     * ("target(com.test.spring.aop.pointcutexp.Intf)")
+     * ("args(String)") 参数为String类型(运行是决定)的方法
+     * ("@within(org.springframework.transaction.annotation.Transactional)") 带有Transactional注解的类的所有方法
+     * ("@annotation(org.springframework.transaction.annotation.Transactional)") 带有Transactional注解的方法
+     * ("@args(org.springframework.transaction.annotation.Transactional)") 参数带有@Transactional标注的方法
      */
-    @Pointcut("@annotation(com.gtw.util.transactional.annotation.Transactional2)")
+    @Pointcut("@within(com.gtw.util.transactional.annotation.Transactional) || @annotation(com.gtw.util.transactional.annotation.Transactional)")
     private void transactionalPoint() { }
 
     /**

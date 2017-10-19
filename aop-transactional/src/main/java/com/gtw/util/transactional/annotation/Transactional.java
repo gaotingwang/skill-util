@@ -6,6 +6,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface Transactional1 {
+public @interface Transactional {
     String[] rollbackForClassName() default {};
 }
