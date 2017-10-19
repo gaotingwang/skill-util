@@ -1,10 +1,26 @@
 package com.gtw.util.transactional.aspect;
 
+import com.gtw.util.transactional.annotation.Transactional;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 定义切面：Pointcut + Advice
+ * Pointcut: 切入点，指定"何处"进行代理
+ * Advice: 通知，在指定点增加具体代理功能
+ *      1.@Before 在连接点（JoinPoint）之前执行的通知
+ *      2.@After 在连接点（JoinPoint）退出的时候执行的通知，无论是否有异常都会执行
+ *      3.@Around 包围一个连接点（JoinPoint）的通知，连接点之前执行的内容会先于@Before指定的内容，连接点之后执行的内容会先于@After指定的内容
+ *      4.@AfterReturning 获取到返回结果之后执行，在@After之后执行，不包括发生异常
+ *      5.@AfterThrowing 发生异常之后执行，在@After之后执行
+ */
 @Component
 @Aspect
 public class TransactionalAspect {
@@ -20,6 +36,7 @@ public class TransactionalAspect {
      * ("@annotation(org.springframework.transaction.annotation.Transactional)") 带有Transactional注解的方法
      * ("@args(org.springframework.transaction.annotation.Transactional)") 参数带有@Transactional标注的方法
      */
+    // 通过@within和@annotation指定在方法和类级别同时开启
     @Pointcut("@within(com.gtw.util.transactional.annotation.Transactional) || @annotation(com.gtw.util.transactional.annotation.Transactional)")
     private void transactionalPoint() { }
 
@@ -31,18 +48,10 @@ public class TransactionalAspect {
      */
     @Around("transactionalPoint()")
     public Object advice(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("环绕通知之开始");
-        Object obj = joinPoint.proceed();
-        System.out.println("环绕通知之结束");
-        return obj;
-    }
-
-    /**
-     * 在进入切点之前执行
-     */
-    @Before("transactionalPoint()")
-    public void open() {
         System.out.println("-----开启事务-----");
+        Object obj = joinPoint.proceed();
+        System.out.println("-----提交事务-----");
+        return obj;
     }
 
     /**
@@ -50,7 +59,6 @@ public class TransactionalAspect {
      */
     @After("transactionalPoint()")
     public void close() {
-        System.out.println("-----提交事务-----");
         System.out.println("-----关闭事务-----");
     }
 
@@ -58,22 +66,67 @@ public class TransactionalAspect {
      * 执行遇到异常执行
      */
     @AfterThrowing(pointcut = "transactionalPoint()", throwing = "error")
-    public void rollback(JoinPoint joinPoint, Throwable error){
+    public void rollback(JoinPoint joinPoint, Throwable error) throws Exception {
         if(error instanceof RuntimeException){
             System.out.println("-----运行时异常，回滚事务-----");
         }else {
-            System.out.println("-----非运行时异常，不回滚事务-----");
+            // 获取抛出异常的名称
+            String exceptionName = error.getClass().getSimpleName();
+
+            // 先判断连接点的方法上是否有注解
+            Method method = this.getMethod4JoinPoint(joinPoint);
+            Transactional methodAnnotation = method.getAnnotation(Transactional.class);
+            if(isRollback4ExceptionName(exceptionName, methodAnnotation)){
+                System.out.println("-----指定异常，回滚事务-----");
+            }else {
+                // 方法级别没有注解，则获取类级别注解
+                Class targetClass = this.getClass4JoinPoint(joinPoint);
+                Transactional classTransactional = (Transactional) targetClass.getAnnotation(Transactional.class);
+                if(isRollback4ExceptionName(exceptionName, classTransactional)){
+                    System.out.println("-----指定异常，回滚事务-----");
+                }else {
+                    System.out.println("-----非运行时异常，不回滚事务-----");
+                }
+            }
         }
+
         System.out.println("-----关闭事务-----");
     }
 
     /**
-     * 获取返回结果，对返回结果可以做一些操作
-     * 是在after之后执行，若发生异常这个方法不会被执行
+     * 是否为指定异常名称回滚
+     * @param exceptionName 异常名称
+     * @param transactional transactionalAnnotation
+     * @return 是否为指定异常名称回滚
      */
-    @AfterReturning(pointcut = "transactionalPoint()", returning = "returnVal")
-    public void close(Object returnVal){
-        System.out.println("返回结果:" + returnVal);
+    private boolean isRollback4ExceptionName(String exceptionName, Transactional transactional) {
+        if(transactional != null) {
+            String rollbackNames[] = transactional.rollbackForClassName();
+            if(rollbackNames != null) {
+                List<String> rollbackFor = Arrays.asList(rollbackNames);
+                return rollbackFor.contains(exceptionName);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取连接点对应的方法
+     * @param joinPoint 连接点
+     * @return 连接点对应的方法
+     */
+    private Method getMethod4JoinPoint(JoinPoint joinPoint) {
+        MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
+        return methodSignature.getMethod();
+    }
+
+    /**
+     * 获取连接点对应的类
+     * @param joinPoint 连接点
+     * @return 连接点对应的类
+     */
+    private Class<?> getClass4JoinPoint(JoinPoint joinPoint) {
+        return joinPoint.getTarget().getClass();
     }
 
 }
