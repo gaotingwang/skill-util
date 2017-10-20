@@ -26,6 +26,13 @@ public class CglibDynamicProxy implements MethodInterceptor {
         return enhancer.create();
     }
 
+    /**
+     * 回调函数
+     * @param obj 代理对象
+     * @param method 委托类方法
+     * @param args 方法参数
+     * @param proxy 每个被代理的方法都对应一个MethodProxy对象，methodProxy.invokeSuper方法最终调用委托类(目标类)的原始方法
+     */
     public Object intercept(Object obj, Method method, Object[] args,
                             MethodProxy proxy) throws Throwable {
         // 在代理真实对象操作前 我们可以添加一些自己的操作

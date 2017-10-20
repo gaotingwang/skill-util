@@ -1,7 +1,5 @@
 package com.gtw.util.prox.jdk;
 
-import com.gtw.util.prox.model.Person;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -40,18 +38,18 @@ public class JDKDynamicProxy implements InvocationHandler {
 
     /**
      * 当我们通过代理对象调用一个方法的时候，这个方法的调用就会被转发为由InvocationHandler这个接口的invoke方法来进行调用。
-     * @param proxy 指代我们所代理的那个真实对象
+     * @param proxy 生成的代理对象
      * @param method 指代的是我们所要调用真实对象的某个方法的Method对象
      * @param args 指代的是调用真实对象某个方法时接受的参数
      */
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        // 在代理真实对象前我们可以添加一些自己的操作
-        System.out.println("前置代理");
-        System.out.println("Method:" + method);
-        // 当代理对象调用真实对象的方法时，其会自动的跳转到代理对象关联的handler对象的invoke方法来进行调用
-        method.invoke(subject, args);
-        // 在代理真实对象后我们也可以添加一些自己的操作
-        System.out.println("后置代理");
-        return null;
-    }
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    // 在代理真实对象前我们可以添加一些自己的操作
+    System.out.println("前置代理");
+    System.out.println("Method:" + method);
+    // 当代理对象调用真实对象的方法时，其会自动的跳转到代理对象关联的handler对象的invoke方法来进行调用
+    Object obj = method.invoke(subject, args);
+    // 在代理真实对象后我们也可以添加一些自己的操作
+    System.out.println("后置代理");
+    return obj;
+}
 }
