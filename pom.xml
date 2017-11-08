@@ -19,5 +19,6 @@
     <modules>
         <module>proxy-pattern</module>
         <module>aop-transactional</module>
+        <module>base-mybatis</module>
     </modules>
 </project>
