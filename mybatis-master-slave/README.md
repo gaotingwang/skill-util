@@ -217,12 +217,12 @@ protected abstract Object determineCurrentLookupKey();
    @Aspect
    public class DataSourceAspect {
 
-       @Before("@annotation(com.gtw.split.annotation.WriteDataSource)")
+       @Before(com.gtw.split.routsource.annotationataSource)")
        public void setWriteDataSourceType() {
            DataSourceContextHolder.writeSource();
        }
 
-       @Before("@annotation(com.gtw.split.annotation.ReadDataSource)")
+    com.gtw.split.routsource.annotationation.ReadDataSource)")
        public void setReadDataSourceType() {
            // 如果已经开启写事务了，继续使用写库，即之后的所有读都从写库读
            if(!DataSourceType.WRITE.getType().equals(DataSourceContextHolder.getJdbcType())){

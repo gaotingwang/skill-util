@@ -1,7 +1,7 @@
-package com.gtw.split.aspect;
+package com.gtw.split.routsource.aspect;
 
-import com.gtw.split.config.source.DataSourceContextHolder;
-import com.gtw.split.config.source.DataSourceType;
+import com.gtw.split.routsource.config.source.DataSourceContextHolder;
+import com.gtw.split.routsource.config.source.DataSourceType;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -33,12 +33,12 @@ public class DataSourceAspect {
         DataSourceContextHolder.writeSource();
     }*/
 
-    @Before("@annotation(com.gtw.split.annotation.WriteDataSource)")
+    @Before("@annotation(com.gtw.split.routsource.annotation.WriteDataSource)")
     public void setWriteDataSourceType() {
         DataSourceContextHolder.writeSource();
     }
 
-    @Before("@annotation(com.gtw.split.annotation.ReadDataSource)")
+    @Before("@annotation(com.gtw.split.routsource.annotation.ReadDataSource)")
     public void setReadDataSourceType() {
         // 如果已经开启写事务了，继续使用写库，即之后的所有读都从写库读
         if(!DataSourceType.WRITE.getType().equals(DataSourceContextHolder.getJdbcType())){

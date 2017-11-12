@@ -1,8 +1,8 @@
-package com.gtw.split.config;
+package com.gtw.split.routsource.config;
 
 import com.github.pagehelper.PageHelper;
-import com.gtw.split.config.source.DataSourceContextHolder;
-import com.gtw.split.config.source.DataSourceType;
+import com.gtw.split.routsource.config.source.DataSourceContextHolder;
+import com.gtw.split.routsource.config.source.DataSourceType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;

@@ -1,8 +1,8 @@
-package com.gtw.split.controller;
+package com.gtw.split.routsource.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.gtw.split.domain.User;
-import com.gtw.split.service.IUserService;
+import com.gtw.split.routsource.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

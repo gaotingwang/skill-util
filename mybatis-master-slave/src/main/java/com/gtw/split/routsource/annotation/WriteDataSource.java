@@ -1,10 +1,10 @@
-package com.gtw.split.annotation;
+package com.gtw.split.routsource.annotation;
 
 import java.lang.annotation.*;
 
 /**
  * 选择写库数据源
- * @see com.gtw.split.aspect.DataSourceAspect
+ * @see com.gtw.split.routsource.aspect.DataSourceAspect
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

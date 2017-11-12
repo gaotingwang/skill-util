@@ -1,4 +1,4 @@
-package com.gtw.split.config.source;
+package com.gtw.split.routsource.config.source;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

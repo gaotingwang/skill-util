@@ -1,10 +1,10 @@
-package com.gtw.split.service;
+package com.gtw.split.routsource.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.gtw.split.annotation.ReadDataSource;
-import com.gtw.split.annotation.WriteDataSource;
+import com.gtw.split.routsource.annotation.ReadDataSource;
+import com.gtw.split.routsource.annotation.WriteDataSource;
 import com.gtw.split.domain.User;
 import com.gtw.split.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
