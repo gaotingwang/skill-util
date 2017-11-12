@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: 读写分离
+demo:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    slave-size: 2
+    master:
+      url: jdbc:mysql://localhost:3306/test1?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+      minIdle: 5
+      maxActive: 100
+      initialSize: 10
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 50
+      removeAbandoned: true
+      filters: stat
+    slave1:
+      url: jdbc:mysql://localhost:3306/test2?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+    slave2:
+      url: jdbc:mysql://localhost:3306/test3?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+logging:
+  path: d:/logs
+  level:
+    com.gtw.split.mapper: debug # sql打印 trace
+#  config: classpath:logback.xml
