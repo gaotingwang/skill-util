@@ -20,6 +20,6 @@
         <module>proxy-pattern</module>
         <module>aop-transactional</module>
         <module>base-mybatis</module>
-        <module>mybaits-master-slave</module>
+        <module>mybatis-master-slave</module>
     </modules>
 </project>
