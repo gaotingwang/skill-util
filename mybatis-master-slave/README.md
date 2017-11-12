@@ -44,20 +44,20 @@ public abstract class AbstractRoutingDataSource extends AbstractDataSource imple
 
 ```java
 protected DataSource determineTargetDataSource() {
-        Assert.notNull(this.resolvedDataSources, "DataSource router not initialized");
-		// 返回lookupKey
-        Object lookupKey = this.determineCurrentLookupKey();
-  		// 根据lookupKey从Map中获得数据源
-        DataSource dataSource = (DataSource)this.resolvedDataSources.get(lookupKey);
-        if(dataSource == null && (this.lenientFallback || lookupKey == null)) {
-            dataSource = this.resolvedDefaultDataSource;
-        }
+    Assert.notNull(this.resolvedDataSources, "DataSource router not initialized");
+    // 返回lookupKey
+    Object lookupKey = this.determineCurrentLookupKey();
+    // 根据lookupKey从Map中获得数据源
+    DataSource dataSource = (DataSource)this.resolvedDataSources.get(lookupKey);
+    if(dataSource == null && (this.lenientFallback || lookupKey == null)) {
+        dataSource = this.resolvedDefaultDataSource;
+    }
 
-        if(dataSource == null) {
-            throw new IllegalStateException("Cannot determine target DataSource for lookup key [" + lookupKey + "]");
-        } else {
-            return dataSource;
-        }
+    if(dataSource == null) {
+        throw new IllegalStateException("Cannot determine target DataSource for lookup key [" + lookupKey + "]");
+    } else {
+        return dataSource;
+    }
 }
 ```
 
@@ -217,12 +217,12 @@ protected abstract Object determineCurrentLookupKey();
    @Aspect
    public class DataSourceAspect {
 
-       @Before(com.gtw.split.routsource.annotationataSource)")
+       @Before("@annotation(com.gtw.split.routsource.annotation.WriteDataSource)")
        public void setWriteDataSourceType() {
            DataSourceContextHolder.writeSource();
        }
 
-    com.gtw.split.routsource.annotationation.ReadDataSource)")
+       @Before("@annotation(com.gtw.split.routsource.annotation.ReadDataSource)")
        public void setReadDataSourceType() {
            // 如果已经开启写事务了，继续使用写库，即之后的所有读都从写库读
            if(!DataSourceType.WRITE.getType().equals(DataSourceContextHolder.getJdbcType())){
