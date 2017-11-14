@@ -21,5 +21,6 @@
         <module>aop-transactional</module>
         <module>base-mybatis</module>
         <module>mybatis-master-slave</module>
+        <module>replication-driver</module>
     </modules>
 </project>
