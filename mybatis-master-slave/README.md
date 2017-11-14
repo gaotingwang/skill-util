@@ -257,3 +257,6 @@ public class UserServiceImpl implements IUserService{
 }
 ```
 
+
+
+实现数据库读写分离的方案是在程序中手动指定多个数据源，比较麻烦。针对Master/Slave，MySQL自带了一个ReplicationDriver的jdbc driver，对代码的侵入性更小，实现方式参考[replication-driver](https://github.com/gaotingwang/skill-util/tree/master/replication-driver)。
