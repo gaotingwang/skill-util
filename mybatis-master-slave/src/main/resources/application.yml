@@ -10,19 +10,19 @@ demo:
       username: root
       password: root
       driver-class-name: com.mysql.jdbc.Driver
-      minIdle: 5
-      maxActive: 100
-      initialSize: 10
-      maxWait: 60000
-      timeBetweenEvictionRunsMillis: 60000
-      minEvictableIdleTimeMillis: 300000
-      validationQuery: select 'x'
-      testWhileIdle: true
-      testOnBorrow: false
-      testOnReturn: false
+      minIdle: 5 #最小空闲连接数量
+      maxActive: 100 #最大活动连接数量
+      initialSize: 10 #初始化连接数量
+      maxWait: 60000 #获取连接时等待时间，超出将抛异常，单位毫秒
+      timeBetweenEvictionRunsMillis: 60000 #获取连接时等待时间，超出将抛异常，单位毫秒
+      minEvictableIdleTimeMillis: 300000 #空闲连接被回收时间，回收空闲连接至minIdle指定数量，单位毫秒
+      validationQuery: select 1 #SQL查询,用来验证从连接池取出的连接
+      testWhileIdle: true #指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除
+      testOnBorrow: false #指明是否在从池中取出连接前进行检验,如果检验失败
+      testOnReturn: false #指明是否在归还到池中前进行检验
       poolPreparedStatements: true
       maxPoolPreparedStatementPerConnectionSize: 50
-      removeAbandoned: true
+      removeAbandoned: true #标记是否删除泄露的连接，设置为true可以为写法糟糕的没有关闭连接的程序修复数据库连接
       filters: stat
     slave1:
       url: jdbc:mysql://localhost:3306/test2?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
