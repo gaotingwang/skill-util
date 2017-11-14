@@ -3,7 +3,7 @@ spring:
     name: 读写分离
   datasource:
     # ReplicationDriver 规定url中第一个主机是master主机地址，剩下的全部是slave主机。另外有两个参数autoReconnect和roundRobinLoadBalance必须指定为true
-    url: jdbc:mysql:replication://localhost:3306,10.211.55.6:3306,10.211.55.6:3307/test1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&roundRobinLoadBalance=true
+    url: jdbc:mysql:replication://localhost:3306,10.211.55.7:3306,10.211.55.6:3307/test1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&roundRobinLoadBalance=true
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.ReplicationDriver
