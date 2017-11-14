@@ -1,14 +1,15 @@
 package com.gtw.replication.service;
 
-import com.github.pagehelper.PageInfo;
 import com.gtw.replication.domain.User;
+
+import java.util.List;
 
 public interface IUserService {
     User getUser(Long id);
 
-    PageInfo<User> queryPage(int pageNum, int pageSize);
+    List<User> queryPage(int offset, int limit);
 
-    void save(User user);
+    Long save(User user);
 
     void writeAndRead(User user);
 

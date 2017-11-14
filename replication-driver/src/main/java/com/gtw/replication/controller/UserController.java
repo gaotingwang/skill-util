@@ -1,10 +1,11 @@
 package com.gtw.replication.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.gtw.replication.domain.User;
 import com.gtw.replication.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -13,8 +14,8 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/users")
-    public PageInfo<User> getUsers() {
-        return userService.queryPage(1, 3);
+    public List<User> getUsers() {
+        return userService.queryPage(0, 3);
     }
 
     @GetMapping(value = "/users/{userId}")
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void save(@RequestBody User user) {
-        userService.save(user);
+    public Long save(@RequestBody User user) {
+        return userService.save(user);
     }
 
     @PostMapping(value="/writeUsers")
