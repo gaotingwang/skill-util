@@ -22,5 +22,6 @@
         <module>base-mybatis</module>
         <module>mybatis-master-slave</module>
         <module>replication-driver</module>
+        <module>es-api</module>
     </modules>
 </project>
