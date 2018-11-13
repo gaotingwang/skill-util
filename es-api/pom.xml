@@ -15,7 +15,8 @@
 
     <properties>
         <es.version>6.4.3</es.version>
-        <fasterxml.jackson>2.9.7</fasterxml.jackson>
+        <es.client.version>5.6.2</es.client.version>
+        <fasterxml.jackson.version>2.9.7</fasterxml.jackson.version>
     </properties>
 
     <dependencies>
@@ -23,6 +24,18 @@
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>${es.version}</version>
+            <exclusions>
+                <!--jackson-databind中已有此包-->
+                <exclusion>
+                    <artifactId>jackson-core</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                </exclusion>
+                <!--log4j-core中已有此包-->
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
@@ -35,9 +48,14 @@
             <version>${es.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>${es.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${fasterxml.jackson}</version>
+            <version>${fasterxml.jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
