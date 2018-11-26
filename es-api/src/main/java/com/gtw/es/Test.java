@@ -14,16 +14,16 @@ import java.util.Map;
 public class Test {
 
     public static void main(String[] args) throws Exception {
-        restClientElasticSearch();
+//        restClientElasticSearch();
 
-//        transportClientElasticSearch();
+        transportClientElasticSearch();
     }
 
     /**
      * 使用transportClient进行es操作
      */
     private static void transportClientElasticSearch() throws Exception {
-        User user = new User("Tom", "trying out Elasticsearch", new Date());
+        User user = new User("Alice", "trying out Elasticsearch", new Date());
         IElasticSearch elasticSearch = new TransportClientElasticSearch("my_index", "my_type");
 
 //        // 增
@@ -33,7 +33,7 @@ public class Test {
 //        User user1 = new User("Jack", "Replace", new Date());
 ////        elasticSearch.replace("2", ConvertUtils.obj2JSON(user));
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("userName", "Tom");
+        map.put("userName", "Alice");
 //        map.put("message", "hahaha");
 //        elasticSearch.update("2", map);
 //
@@ -44,7 +44,7 @@ public class Test {
 //            System.out.println(resultUser);
 //        }
 //
-        elasticSearch.termSearchForList(map);
+        elasticSearch.matchSearchForList(map);
 
     }
 
@@ -55,7 +55,7 @@ public class Test {
         User user = new User("Tom", "trying out Elasticsearch", new Date());
         IElasticSearch elasticSearch = new RestClientElasticSearch("my_index", "my_type");
 
-        elasticSearch.save(user);
+//        elasticSearch.save(user);
 
         String result = elasticSearch.searchById("AWcLbaOlqCf64eUhhmS0");
         if (result != null){
@@ -65,6 +65,6 @@ public class Test {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", "张三");
-        elasticSearch.termSearchForList(map);
+        elasticSearch.matchSearchForList(map);
     }
 }

@@ -20,6 +20,8 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -236,24 +238,13 @@ public class TransportClientElasticSearch implements IElasticSearch {
         return result;
     }
 
-    public Page termSearchForPage(Page page, String termName, String termValue) throws IOException {
-        return null;
-    }
-
-    public List termSearchForList(Map<String, Object> mapQuery) throws IOException {
+    public List matchSearchForList(Map<String, Object> mapQuery) throws IOException {
         this.client = this.initEsClient();
 
-        BoolQueryBuilder bq= boolQuery();
-        for (Map.Entry<String, Object> entry : mapQuery.entrySet()) {
-            bq = bq.must(termQuery(entry.getKey(), entry.getValue()));
-        }
+        QueryBuilder qb = QueryBuilders.matchQuery("userName", "Alice");
         SearchRequestBuilder requestBuilder = client.prepareSearch(index)
                 .setTypes(type)
-                .setTimeout(TimeValue.timeValueMillis(timeout))
-                .setSearchType(SearchType.QUERY_THEN_FETCH)
-//                .setPostFilter(QueryBuilders.rangeQuery("age").from(12).to(18)) // filter
-                .setQuery(bq)
-//                .setFrom(0).setSize(60).setExplain(true)
+                .setQuery(qb)
                 ;
 
         logger.info(requestBuilder.toString());
@@ -266,5 +257,9 @@ public class TransportClientElasticSearch implements IElasticSearch {
 
         this.client.close();
         return result;
+    }
+
+    public Page termSearchForPage(Page page, String termName, String termValue) throws IOException {
+        return null;
     }
 }

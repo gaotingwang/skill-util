@@ -31,6 +31,7 @@ import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 public class RestClientElasticSearch implements IElasticSearch {
@@ -243,16 +244,12 @@ public class RestClientElasticSearch implements IElasticSearch {
         return result;
     }
 
-    public Page termSearchForPage(Page page, String termName, String termValue) throws IOException {
-        return null;
-    }
-
-    public List termSearchForList(Map<String, Object> mapQuery) throws IOException {
+    public List matchSearchForList(Map<String, Object> mapQuery) throws IOException {
         this.client = this.initEsClient();
 
         BoolQueryBuilder queryBuilder= boolQuery();
         for (Map.Entry<String, Object> entry : mapQuery.entrySet()) {
-            queryBuilder = queryBuilder.must(termQuery(entry.getKey(), entry.getValue()));
+            queryBuilder = queryBuilder.must(matchQuery(entry.getKey(), entry.getValue()));
         }
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(queryBuilder)
@@ -284,5 +281,9 @@ public class RestClientElasticSearch implements IElasticSearch {
 
         this.client.close();
         return result;
+    }
+
+    public Page termSearchForPage(Page page, String termName, String termValue) throws IOException {
+        return null;
     }
 }

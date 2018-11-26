@@ -56,6 +56,10 @@ public interface IElasticSearch {
      */
     List searchByIds(String... ids) throws IOException;
 
+    /**
+     * term查询
+     */
+    List matchSearchForList(Map<String ,Object> mapQuery) throws IOException;
+
     Page termSearchForPage(Page page, String termName, String termValue) throws IOException;
-    List termSearchForList(Map<String ,Object> mapQuery) throws IOException;
 }
