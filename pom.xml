@@ -23,5 +23,6 @@
         <module>mybatis-master-slave</module>
         <module>replication-driver</module>
         <module>es-api</module>
+        <module>eclipse-adaptable</module>
     </modules>
 </project>
