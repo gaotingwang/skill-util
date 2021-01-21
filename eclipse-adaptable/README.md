@@ -1,6 +1,6 @@
 Eclipse采用“平台+插件”的体系结构，平台仅仅作为一个容器，所有的业务功能都封装在插件中，通过插件组件构建开发环境。
 
-![img](http://www.blogjava.net/images/blogjava_net/xujun7/eclipse.jpg)
+![img](https://gtw.oss-cn-shanghai.aliyuncs.com/eclipse.jpg)
 
 Platform Runtime平台运行库是内核，Eclipse所有的功能就是通过这个runtime和插件一起完成。 在这个runtime里，定义Eclipse的核心功能。`IAdaptable`是Eclipse的核心模式，是Eclipse扩展机制的核心，就是这个简单的IAdaptable接口奠定了整个Eclipse扩展平台的基础，对Eclipse开发者来说，这个接口就像Java的Exception，Object一样，无处不在。
 
