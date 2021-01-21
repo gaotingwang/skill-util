@@ -6,6 +6,8 @@ Platform Runtime平台运行库是内核，Eclipse所有的功能就是通过这
 
 看开发示例前，确保已理解[从Eclipse平台看交易平台化](https://developer.aliyun.com/article/38)里讲的思想，否则食之无味。
 
+![eclipse-IAdaptable](https://gtw.oss-cn-shanghai.aliyuncs.com/eclipse-IAdaptable.png)
+
 ## 开发示例
 
 1. 首先开发业务功能，需要定义业务领域对象， 这里用IOrder接口来实现：
